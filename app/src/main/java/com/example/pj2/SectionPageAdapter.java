@@ -1,8 +1,5 @@
-package com.example.tt;
+package com.example.pj2;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;

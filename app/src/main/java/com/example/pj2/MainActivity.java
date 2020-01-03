@@ -1,7 +1,6 @@
-package com.example.tt;
+package com.example.pj2;
 
 import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
@@ -11,10 +10,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.tt.tab1.tab1;
-import com.example.tt.tab1.tab1_addcontacts;
-import com.example.tt.tab2.tab2;
-import com.example.tt.tab3.tab3;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 

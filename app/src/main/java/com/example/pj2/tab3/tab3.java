@@ -1,4 +1,4 @@
-package com.example.tt.tab3;
+package com.example.pj2.tab3;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,8 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tt.R;
-import com.example.tt.SectionPageAdapter;
+import com.example.pj2.R;
 
 import android.graphics.Typeface;
 

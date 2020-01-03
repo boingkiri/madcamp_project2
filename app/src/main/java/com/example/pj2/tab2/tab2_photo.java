@@ -1,9 +1,6 @@
-package com.example.tt.tab2;
+package com.example.pj2.tab2;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.tt.R;
-import com.example.tt.helper.Utils;
-
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import com.example.pj2.R;
+import com.example.pj2.helper.Utils;
 
 
 public class tab2_photo extends Fragment {
@@ -31,7 +23,7 @@ public class tab2_photo extends Fragment {
     private ViewPager viewPager;
 
     private int position;
-    private com.example.tt.tab2.ImageAdapter ImageAdapter;
+    private com.example.pj2.tab2.ImageAdapter ImageAdapter;
     public static final String ARG_OBJECT = "object";
 
     public tab2_photo(int img, ImageAdapter imageAdapter) {

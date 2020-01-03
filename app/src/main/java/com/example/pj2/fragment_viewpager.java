@@ -1,4 +1,4 @@
-package com.example.tt;
+package com.example.pj2;
 
 import android.os.Bundle;
 
@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.tt.tab1.tab1;
-import com.example.tt.tab2.tab2;
-import com.example.tt.tab3.tab3;
+import com.example.pj2.tab1.tab1;
+import com.example.pj2.tab2.tab2;
+import com.example.pj2.tab3.tab3;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 

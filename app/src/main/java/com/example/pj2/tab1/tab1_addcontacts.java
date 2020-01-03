@@ -1,30 +1,20 @@
-package com.example.tt.tab1;
+package com.example.pj2.tab1;
 
 
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.ContentProviderOperation;
-import android.content.OperationApplicationException;
 import android.os.Bundle;
-import android.os.RemoteException;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.tt.R;
-import com.example.tt.fragment_viewpager;
-
-import java.util.ArrayList;
+import com.example.pj2.R;
+import com.example.pj2.fragment_viewpager;
 
 public class tab1_addcontacts extends Fragment {
 

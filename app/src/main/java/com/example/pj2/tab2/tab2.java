@@ -1,16 +1,14 @@
-package com.example.tt.tab2;
+package com.example.pj2.tab2;
 
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,16 +18,14 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 
-import com.example.tt.R;
-import com.example.tt.SectionPageAdapter;
-import com.example.tt.helper.AppConstant;
-import com.example.tt.helper.Utils;
+import com.example.pj2.R;
+import com.example.pj2.helper.AppConstant;
+import com.example.pj2.helper.Utils;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 

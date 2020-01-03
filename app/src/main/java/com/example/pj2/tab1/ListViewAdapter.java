@@ -1,6 +1,5 @@
-package com.example.tt.tab1;
+package com.example.pj2.tab1;
 
-import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.tt.R;
+import com.example.pj2.R;
 
 import java.text.Collator;
 import java.util.ArrayList;

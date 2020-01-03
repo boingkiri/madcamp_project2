@@ -1,18 +1,11 @@
-package com.example.tt.tab1;
+package com.example.pj2.tab1;
 
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentProviderOperation;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.OperationApplicationException;
 import android.os.Bundle;
-import android.os.RemoteException;
-import android.provider.ContactsContract;
-
-import java.util.ArrayList;
 
 
 import androidx.fragment.app.Fragment;
@@ -27,9 +20,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.tt.R;
-import com.example.tt.SectionPageAdapter;
-import com.example.tt.tab2.FullScreenViewActivity;
+import com.example.pj2.R;
 
 public class tab1 extends Fragment{
     ListViewAdapter adapter;

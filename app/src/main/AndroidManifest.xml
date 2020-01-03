@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.tt">
+    package="com.example.pj2">
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -28,7 +28,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.pj2.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.tt.tab2.FullScreenViewActivity"
+            android:name="com.example.pj2.tab2.FullScreenViewActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>

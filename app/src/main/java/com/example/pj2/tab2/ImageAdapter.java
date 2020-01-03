@@ -1,36 +1,20 @@
-package com.example.tt.tab2;
+package com.example.pj2.tab2;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.TypedArray;
-import android.database.Cursor;
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import androidx.annotation.Nullable;
+import com.example.pj2.helper.Utils;
 
-import com.example.tt.helper.Utils;
-
-import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
-
-import static androidx.core.app.ActivityCompat.startActivityForResult;
 
 
 public class ImageAdapter extends BaseAdapter {

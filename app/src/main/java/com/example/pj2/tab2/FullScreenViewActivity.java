@@ -1,4 +1,4 @@
-package com.example.tt.tab2;
+package com.example.pj2.tab2;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import android.widget.ImageButton;
 
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.tt.R;
-import com.example.tt.helper.Utils;
+import com.example.pj2.R;
+import com.example.pj2.helper.Utils;
 
 
 public class FullScreenViewActivity extends Activity {

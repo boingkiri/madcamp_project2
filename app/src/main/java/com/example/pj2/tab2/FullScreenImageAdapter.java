@@ -1,7 +1,6 @@
-package com.example.tt.tab2;
+package com.example.pj2.tab2;
 
 
-import java.io.File;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -15,13 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.tt.R;
+import com.example.pj2.R;
 import com.ortiz.touchview.TouchImageView;
 
 public class FullScreenImageAdapter extends PagerAdapter {
