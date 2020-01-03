@@ -4,5 +4,5 @@
     <string name="button_no">아니오</string>
     <string name="alert_title_question">질문</string>
     <string name="alert_msg_delete">"%s"를 삭제하시겠습니까?</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="facebook_app_id">786769228506937</string> <string name="fb_login_protocol_scheme">fb786769228506937</string>
 </resources>

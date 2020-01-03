@@ -8,7 +8,11 @@
     tools:context=".MainActivity"
     app:layout_constraintBottom_toTopOf="parent"
     android:orientation="vertical">
-
+    <Button
+        android:id="@+id/btn_fb_login"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+    />
 
 
     <com.google.android.material.tabs.TabLayout
