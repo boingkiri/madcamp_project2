@@ -7,13 +7,28 @@
     android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
-    <Button
+    <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:id="@+id/add_contact"
-        android:fontFamily="@font/nanumsquareroundb"
-        android:text="전화번호부 추가"
-        />
+        android:weightSum="2">
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/add_contact"
+            android:fontFamily="@font/nanumsquareroundb"
+            android:text="전화번호부 추가"
+            android:layout_weight="1"
+            />
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/add_server"
+            android:fontFamily="@font/nanumsquareroundb"
+            android:text="서버에 추가"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"

@@ -126,4 +126,5 @@ public class ImageAdapter extends BaseAdapter {
         mImgs = new Utils(mContext).getFilePaths();
         notifyDataSetChanged();
     }
+
 }

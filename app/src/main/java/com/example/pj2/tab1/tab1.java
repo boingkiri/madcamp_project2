@@ -19,7 +19,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.pj2.R;
 
 public class tab1 extends Fragment{
@@ -37,6 +44,7 @@ public class tab1 extends Fragment{
 
         View view= inflater.inflate(R.layout.fragment_tab1, container, false);
         Button addContactbtn = view.findViewById(R.id.add_contact);
+        Button addToServer = view.findViewById(R.id.add_server);
 
         ListView MyListView = view.findViewById(R.id.list);
         adapter = new ListViewAdapter(getActivity());
@@ -57,6 +65,37 @@ public class tab1 extends Fragment{
 
 //                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+            }
+        });
+
+        addToServer.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+//                final TextView textView = (TextView) getActivity().findViewById(R.id.text);
+                // ...
+
+                // Instantiate the RequestQueue.
+                RequestQueue queue = Volley.newRequestQueue(getActivity());
+                String url ="http://192.249.19.254:7080";
+
+                // Request a string response from the provided URL.
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                // Display the first 500 characters of the response string.
+//                                textView.setText("Response is: "+ response.substring(0,500));
+                                Log.d("YooHoo!","Server connection complete");
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("No!","Connection error");
+                    }
+                });
+
+                // Add the request to the RequestQueue.
+                queue.add(stringRequest);
             }
         });
 

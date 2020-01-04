@@ -15,15 +15,62 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <Button
-            android:id="@+id/takepicbtn"
-            android:layout_width="match_parent"
+        <LinearLayout
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/nanumsquareroundb"
-            android:gravity="center"
-            android:text="Take Picture" />
-
+            android:layout_width="match_parent"
+            android:weightSum="2"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+                <Button
+                    android:id="@+id/takepicbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/nanumsquareroundb"
+                    android:gravity="center"
+                    android:text="Take Picture"
+                    android:layout_weight="1"/>
+                <Button
+                    android:id="@+id/gallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/nanumsquareroundb"
+                    android:gravity="center"
+                    android:text="Existing File"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+                <Button
+                    android:id="@+id/uploadserverbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/nanumsquareroundb"
+                    android:gravity="center"
+                    android:text="Upload To Server"
+                    android:layout_weight="1"/>
+                <Button
+                    android:id="@+id/downloadserverbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/nanumsquareroundb"
+                    android:gravity="center"
+                    android:text="Download To Server"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+        </LinearLayout>
         <GridView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
