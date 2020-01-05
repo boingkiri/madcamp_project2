@@ -62,7 +62,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         Log.d("Success", "Login");
+                        setContentView(R.layout.activity_main);
 
+
+
+
+                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                        fragmentTransaction.add(R.id.outerfragment, new fragment_viewpager());
+                        fragmentTransaction.commit();
                     }
 
                     @Override
@@ -77,28 +85,29 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                     }
                 });
-
-        setContentView(R.layout.activity_main);
-
-//        Button btn_fb_login = findViewById(R.id.btn_fb_login);
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-//        btn_fb_login.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
+
+//        setContentView(R.layout.activity_main);
 //
-//            }
-//        });
-
-//        mViewpager = findViewById(R.id.frame);
-        getHashKey(getApplicationContext());
-//        tabLayout.setupWithViewPager(mViewpager);
-
-
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-//        fragmentTransaction.add(R.id.frame, new tab1());
-        fragmentTransaction.add(R.id.outerfragment, new fragment_viewpager());
-        fragmentTransaction.commit();
+////        Button btn_fb_login = findViewById(R.id.btn_fb_login);
+//        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+////        btn_fb_login.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View view) {
+////
+////            }
+////        });
+//
+////        mViewpager = findViewById(R.id.frame);
+//        getHashKey(getApplicationContext());
+////        tabLayout.setupWithViewPager(mViewpager);
+//
+//
+//        FragmentManager fm = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+////        fragmentTransaction.add(R.id.frame, new tab1());
+//        fragmentTransaction.add(R.id.outerfragment, new fragment_viewpager());
+//        fragmentTransaction.commit();
     }
 
     @Nullable
@@ -133,6 +142,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy() {
+        LoginManager.getInstance().logOut();
+//        FacebookSdk.sdkInitialize(getApplicationContext());
+        super.onDestroy();
     }
 }
 

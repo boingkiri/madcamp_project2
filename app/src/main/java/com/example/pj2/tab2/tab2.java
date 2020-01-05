@@ -13,6 +13,8 @@ import android.os.Bundle;
 
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -29,6 +31,10 @@ import android.widget.Toast;
 import com.example.pj2.R;
 import com.example.pj2.helper.AppConstant;
 import com.example.pj2.helper.Utils;
+import com.example.pj2.tab1.tab1_addcontacts;
+import com.facebook.AccessToken;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -79,6 +85,9 @@ public class tab2 extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tab2, container, false);
         gridView = v.findViewById(R.id.mygalleryid);
+
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+//        Log.d("Facebook_User", accessToken.getUserId());
 
 //        File mediaStorageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File directory = new File(android.os.Environment.getExternalStorageDirectory() + File.separator + AppConstant.PHOTO_ALBUM);
@@ -154,7 +163,18 @@ public class tab2 extends Fragment {
         Uploadbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadToServer((String)imgAdapter.getItem(1));
+
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                //Casting getitem value to integer -> can be vulnerable.
+                Fragment newFragment = new tab2_select();
+
+                fragmentTransaction.replace(R.id.outerfragment, newFragment);
+//                FragmentStatePagerAdapter swipe = DemoCollectionPagerAdapter(fm);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 
@@ -162,7 +182,7 @@ public class tab2 extends Fragment {
         downloadbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadToServer((String)imgAdapter.getItem(1));
+//                uploadToServer((String)imgAdapter.getItem(1));
             }
         });
 //        return inflater.inflate(R.layout.fragment_tab2, container, false);
@@ -389,43 +409,6 @@ public class tab2 extends Fragment {
     }
 
 
-    public interface UploadAPIs {
-        @Multipart
-        @POST("/upload")
-        Call<ResponseBody> uploadImage(@Part MultipartBody.Part file, @Part("name") RequestBody requestBody);
-    }
-
-    private void uploadToServer(String filePath) {
-        Retrofit retrofit = NetworkClient.getRetrofitClient(getActivity());
-        UploadAPIs uploadAPIs = retrofit.create(UploadAPIs.class);
-        //Check file path
-        Log.d("uploadToServer",filePath);
-        //Create a file object using file path
-        File file = new File(filePath);
-        // Create a request body with file and image media type
-        RequestBody fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        // Create MultipartBody.Part using file request-body,file name and part name
-        MultipartBody.Part part = MultipartBody.Part.createFormData("image", file.getName(), fileReqBody);
-        //Create request body with text description and text media type
-        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
-        //
-        Call call = uploadAPIs.uploadImage(part, description);
-
-        Log.d("multipartbody",part.headers().toString());
-        Log.d("multipartbody",part.body().contentType().toString());
-        Log.d("description",description.toString());
-        call.enqueue(new Callback() {
-            @Override
-            public void onResponse(Call call, Response response) {
-                Log.d("File upload response",response.toString());
-            }
-
-            @Override
-            public void onFailure(Call call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
 }
 
 

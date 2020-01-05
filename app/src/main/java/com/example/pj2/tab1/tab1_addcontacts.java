@@ -50,14 +50,8 @@ public class tab1_addcontacts extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                //Casting getitem value to integer -> can be vulnerable.
-                Fragment newFragment = new fragment_viewpager();
+                fm.popBackStack();
 
-                fragmentTransaction.replace(R.id.outerfragment, newFragment);
-//                FragmentStatePagerAdapter swipe = DemoCollectionPagerAdapter(fm);
-//        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                fragmentTransaction.commit();
             }
         });
         return view;
@@ -74,13 +68,6 @@ public class tab1_addcontacts extends Fragment {
             e.printStackTrace();
         }
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        //Casting getitem value to integer -> can be vulnerable.
-        Fragment newFragment = new fragment_viewpager();
-
-        fragmentTransaction.replace(R.id.outerfragment, newFragment);
-//                FragmentStatePagerAdapter swipe = DemoCollectionPagerAdapter(fm);
-//        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
+        fm.popBackStack();
     }
 }

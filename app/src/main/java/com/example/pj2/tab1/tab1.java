@@ -63,7 +63,7 @@ public class tab1 extends Fragment{
 //                FragmentStatePagerAdapter swipe = DemoCollectionPagerAdapter(fm);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
-//                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
