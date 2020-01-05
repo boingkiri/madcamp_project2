@@ -7,6 +7,7 @@ import android.graphics.BlendModeColorFilter;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.FileUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.facebook.AccessToken;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -97,7 +99,9 @@ public class tab2_select extends Fragment {
         Uploadbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadToServer((String)imgAdapter.getItem(1));
+                uploadToServer(selected_photo);
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                fm.popBackStack();
             }
         });
 
@@ -115,31 +119,40 @@ public class tab2_select extends Fragment {
     public interface UploadAPIs {
         @Multipart
         @POST("/upload")
-        Call<ResponseBody> uploadImage(@Part MultipartBody.Part file,
-                                       @Part("name") RequestBody requestBody,
-                                       @Part("user_id")RequestBody user_id);
+//        Call<ResponseBody> uploadImage(@Part MultipartBody.Part file,
+//                                       @Part("name") RequestBody requestBody,
+//                                       @Part("user_id")RequestBody user_id);
+        Call<ResponseBody> uploadImages(@Part List<MultipartBody.Part> files,
+                                    @Part("user_id") RequestBody user_id);
     }
 
-    private void uploadToServer(String filePath) {
+    private void uploadToServer(ArrayList<String> filePath) {
         Retrofit retrofit = NetworkClient.getRetrofitClient(getActivity());
         UploadAPIs uploadAPIs = retrofit.create(UploadAPIs.class);
-        //Check file path
-        Log.d("uploadToServer",filePath);
+
+        // create list of file parts (photo, video, ...)
+        List<MultipartBody.Part> parts = new ArrayList<>();
+
+        for (int i = 0; i < filePath.size(); i++){
+            parts.add(prepareFilePart("image",filePath.get(i)));
+        }
         //Create a file object using file path
-        File file = new File(filePath);
+//        File file = new File(filePath);
         // Create a request body with file and image media type
-        RequestBody fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+//        RequestBody fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         // Create MultipartBody.Part using file request-body,file name and part name
-        MultipartBody.Part part = MultipartBody.Part.createFormData("image", file.getName(), fileReqBody);
+//        MultipartBody.Part part = MultipartBody.Part.createFormData("image", file.getName(), fileReqBody);
         //Create request body with text description and text media type
-        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
+//        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
         //
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
 //        Log.d("Facebook_User", accessToken.getUserId());
 
         //Create request body with Facebook id for auth.
         RequestBody usr_id = RequestBody.create(MediaType.parse("text/plain"), accessToken.getUserId());
-        Call call = uploadAPIs.uploadImage(part, description, usr_id);
+//        Call call = uploadAPIs.uploadImage(part, description, usr_id);
+
+        Call call = uploadAPIs.uploadImages(parts, usr_id);
 
 //        Log.d("multipartbody",part.headers().toString());
 //        Log.d("multipartbody",part.body().contentType().toString());
@@ -157,23 +170,21 @@ public class tab2_select extends Fragment {
         });
     }
 
-//    @NonNull
-//    private MultipartBody.Part prepareFilePart(String partName, String filepath) {
-//        // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
-//        // use the FileUtils to get the actual file by uri
-//        File file = new File(filepath);
-////        File file = FileUtils.getFile(this, fileUri);
-//        //compress the image using Compressor lib
-//        Timber.d("size of image before compression --> " + file.getTotalSpace());
-//        compressedImageFile = new Compressor(this).compressToFile(file);
-//        Timber.d("size of image after compression --> " + compressedImageFile.getTotalSpace());
-//        // create RequestBody instance from file
+    @NonNull
+    private MultipartBody.Part prepareFilePart(String partName, String filepath) {
+        // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
+        // use the FileUtils to get the actual file by uri
+        File file = new File(filepath);
+        // create RequestBody instance from file
+
+//        RequestBody requestFile = RequestBody.create (MediaType.parse(FileUtils.MIME_TYPE_IMAGE), file);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 //        RequestBody requestFile =
 //                RequestBody.create(
 //                        MediaType.parse(getContentResolver().getType(fileUri)),
 //                        compressedImageFile);
-//
-//        // MultipartBody.Part is used to send also the actual file name
-//        return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
-//    }
+
+        // MultipartBody.Part is used to send also the actual file name
+        return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
+    }
 }
