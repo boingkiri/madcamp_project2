@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.pj2.tab1.tab1;
+import com.example.pj2.tab1.Fragment1;
 import com.example.pj2.tab2.tab2;
 import com.example.pj2.tab3.tab3;
 import com.google.android.material.tabs.TabItem;
@@ -42,7 +42,8 @@ public class fragment_viewpager extends Fragment{
 
 
         tabLayout = getActivity().findViewById(R.id.tabs);
-        tab1 = getActivity().findViewById(R.id.tab1);
+//        tab1 = getActivity().findViewById(R.id.tab1);
+        tab1 = getActivity().findViewById(R.id.listview1); ////////////////////
         tab2 = getActivity().findViewById(R.id.tab2);
         tab3 = getActivity().findViewById(R.id.tab3);
 
@@ -56,17 +57,16 @@ public class fragment_viewpager extends Fragment{
         setupViewPager(mViewpager);
         tabLayout.setupWithViewPager(mViewpager);
 
-
         FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
 //        fragmentTransaction.add(R.id.frame, new tab1());
-        fragmentTransaction.replace(R.id.frame, new tab1());
+        fragmentTransaction.replace(R.id.frame, new Fragment1());
         fragmentTransaction.commit();
 
         return view;
     }
     public void setupViewPager(androidx.viewpager.widget.ViewPager viewPager) {
-        sectionPageAdapter.addFragment(new tab1(), "Tel");
+        sectionPageAdapter.addFragment(new Fragment1(), "Tel");
         sectionPageAdapter.addFragment(new tab2(), "Gallery");
         sectionPageAdapter.addFragment(new tab3(), "Weather");
         viewPager.setAdapter(sectionPageAdapter);

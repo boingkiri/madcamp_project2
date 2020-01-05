@@ -89,7 +89,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         Log.d("Success", "Login");
-
+                        setContentView(R.layout.activity_main);
+                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                        fragmentTransaction.add(R.id.outerfragment, new fragment_viewpager());
+                        fragmentTransaction.commit();
                     }
 
                     @Override
@@ -105,27 +109,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        setContentView(R.layout.activity_main);
 
 //        Button btn_fb_login = findViewById(R.id.btn_fb_login);
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-//        btn_fb_login.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
 
-//        mViewpager = findViewById(R.id.frame);
-        getHashKey(getApplicationContext());
-//        tabLayout.setupWithViewPager(mViewpager);
-
-
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-//        fragmentTransaction.add(R.id.frame, new tab1());
-        fragmentTransaction.add(R.id.outerfragment, new fragment_viewpager());
-        fragmentTransaction.commit();
     }
 
     @Nullable
