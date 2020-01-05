@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -21,6 +25,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.pj2.tab1.PhoneBook;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -32,7 +37,9 @@ import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -40,10 +47,30 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressWarnings("ClickableViewAccessibility")
 
+    public static List<String> names;
+    public static List<PhoneBook> phoneBooks;
+
+    private String[] permission_list = { Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkPermission();
+        names = new ArrayList<>();
+        phoneBooks = new ArrayList<>();
+        Cursor c = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+        c.moveToFirst();
+        do {
+            PhoneBook pb = new PhoneBook();
+            String name = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            String phoneNumber = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            pb.setName(name);
+            pb.setTel(phoneNumber);
+            names.add(name);
+            phoneBooks.add(pb);
+        } while (c.moveToNext());
 
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission_group.CONTACTS}, 1);
@@ -62,15 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         Log.d("Success", "Login");
-                        setContentView(R.layout.activity_main);
 
-
-
-
-                        FragmentManager fm = getSupportFragmentManager();
-                        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                        fragmentTransaction.add(R.id.outerfragment, new fragment_viewpager());
-                        fragmentTransaction.commit();
                     }
 
                     @Override
@@ -85,29 +104,28 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                     }
                 });
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
 
-//        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
+
+//        Button btn_fb_login = findViewById(R.id.btn_fb_login);
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+//        btn_fb_login.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
 //
-////        Button btn_fb_login = findViewById(R.id.btn_fb_login);
-//        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-////        btn_fb_login.setOnClickListener(new View.OnClickListener() {
-////            @Override
-////            public void onClick(View view) {
-////
-////            }
-////        });
-//
-////        mViewpager = findViewById(R.id.frame);
-//        getHashKey(getApplicationContext());
-////        tabLayout.setupWithViewPager(mViewpager);
-//
-//
-//        FragmentManager fm = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-////        fragmentTransaction.add(R.id.frame, new tab1());
-//        fragmentTransaction.add(R.id.outerfragment, new fragment_viewpager());
-//        fragmentTransaction.commit();
+//            }
+//        });
+
+//        mViewpager = findViewById(R.id.frame);
+        getHashKey(getApplicationContext());
+//        tabLayout.setupWithViewPager(mViewpager);
+
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+//        fragmentTransaction.add(R.id.frame, new tab1());
+        fragmentTransaction.add(R.id.outerfragment, new fragment_viewpager());
+        fragmentTransaction.commit();
     }
 
     @Nullable
@@ -144,11 +162,37 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    public void checkPermission(){
+        //현재 안드로이드 버전이 6.0미만이면 메서드를 종료한다.
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+            return;
+
+        for(String permission : permission_list){
+            //권한 허용 여부를 확인한다.
+            int chk = this.checkCallingOrSelfPermission(permission);
+
+            if(chk == PackageManager.PERMISSION_DENIED){
+                //권한 허용을여부를 확인하는 창을 띄운다
+                requestPermissions(permission_list,0);
+            }
+        }
+    }
     @Override
-    protected void onDestroy() {
-        LoginManager.getInstance().logOut();
-//        FacebookSdk.sdkInitialize(getApplicationContext());
-        super.onDestroy();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==0)
+        {
+            for(int i=0; i<grantResults.length; i++)
+            {
+                //허용됬다면
+                if(grantResults[i]==PackageManager.PERMISSION_GRANTED){
+                }
+                else {
+                    Toast.makeText(this.getApplicationContext(),"앱권한설정하세요",Toast.LENGTH_LONG).show();
+                    this.finish();
+                }
+            }
+        }
     }
 }
 

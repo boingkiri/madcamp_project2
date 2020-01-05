@@ -1,13 +1,9 @@
 package com.example.pj2.tab2;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.BlendMode;
-import android.graphics.BlendModeColorFilter;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.os.FileUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.pj2.R;
-import com.example.pj2.fragment_viewpager;
 import com.example.pj2.helper.AppConstant;
 import com.example.pj2.helper.Utils;
 import com.facebook.AccessToken;
@@ -45,7 +39,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 
-public class tab2_select extends Fragment {
+public class tab2_download extends Fragment {
     private ImageAdapter imgAdapter;
     private GridView gridView;
     String basePath = null;
@@ -119,11 +113,8 @@ public class tab2_select extends Fragment {
     public interface UploadAPIs {
         @Multipart
         @POST("/upload")
-//        Call<ResponseBody> uploadImage(@Part MultipartBody.Part file,
-//                                       @Part("name") RequestBody requestBody,
-//                                       @Part("user_id")RequestBody user_id);
         Call<ResponseBody> uploadImages(@Part List<MultipartBody.Part> files,
-                                    @Part("user_id") RequestBody user_id);
+                                        @Part("user_id") RequestBody user_id);
     }
 
     private void uploadToServer(ArrayList<String> filePath) {
@@ -136,17 +127,8 @@ public class tab2_select extends Fragment {
         for (int i = 0; i < filePath.size(); i++){
             parts.add(prepareFilePart("image",filePath.get(i)));
         }
-        //Create a file object using file path
-//        File file = new File(filePath);
-        // Create a request body with file and image media type
-//        RequestBody fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        // Create MultipartBody.Part using file request-body,file name and part name
-//        MultipartBody.Part part = MultipartBody.Part.createFormData("image", file.getName(), fileReqBody);
-        //Create request body with text description and text media type
-//        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
         //
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
-//        Log.d("Facebook_User", accessToken.getUserId());
 
         //Create request body with Facebook id for auth.
         RequestBody usr_id = RequestBody.create(MediaType.parse("text/plain"), accessToken.getUserId());
@@ -154,9 +136,6 @@ public class tab2_select extends Fragment {
 
         Call call = uploadAPIs.uploadImages(parts, usr_id);
 
-//        Log.d("multipartbody",part.headers().toString());
-//        Log.d("multipartbody",part.body().contentType().toString());
-//        Log.d("description",description.toString());
         call.enqueue(new Callback() {
             @Override
             public void onResponse(Call call, Response response) {
@@ -177,12 +156,7 @@ public class tab2_select extends Fragment {
         File file = new File(filepath);
         // create RequestBody instance from file
 
-//        RequestBody requestFile = RequestBody.create (MediaType.parse(FileUtils.MIME_TYPE_IMAGE), file);
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-//        RequestBody requestFile =
-//                RequestBody.create(
-//                        MediaType.parse(getContentResolver().getType(fileUri)),
-//                        compressedImageFile);
 
         // MultipartBody.Part is used to send also the actual file name
         return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);

@@ -31,10 +31,7 @@ import android.widget.Toast;
 import com.example.pj2.R;
 import com.example.pj2.helper.AppConstant;
 import com.example.pj2.helper.Utils;
-import com.example.pj2.tab1.tab1_addcontacts;
 import com.facebook.AccessToken;
-import com.facebook.Profile;
-import com.facebook.ProfileTracker;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,18 +43,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.http.Multipart;
-import retrofit2.http.POST;
-import retrofit2.http.Part;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -167,7 +152,7 @@ public class tab2 extends Fragment {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fm.beginTransaction();
                 //Casting getitem value to integer -> can be vulnerable.
-                Fragment newFragment = new tab2_select();
+                Fragment newFragment = new tab2_upload();
 
                 fragmentTransaction.replace(R.id.outerfragment, newFragment);
 //                FragmentStatePagerAdapter swipe = DemoCollectionPagerAdapter(fm);
@@ -183,6 +168,17 @@ public class tab2 extends Fragment {
             @Override
             public void onClick(View v) {
 //                uploadToServer((String)imgAdapter.getItem(1));
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                //Casting getitem value to integer -> can be vulnerable.
+                Fragment newFragment = new tab2_download();
+
+                fragmentTransaction.replace(R.id.outerfragment, newFragment);
+//                FragmentStatePagerAdapter swipe = DemoCollectionPagerAdapter(fm);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 //        return inflater.inflate(R.layout.fragment_tab2, container, false);
