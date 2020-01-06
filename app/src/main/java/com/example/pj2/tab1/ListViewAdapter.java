@@ -16,6 +16,10 @@ import com.example.pj2.R;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static android.view.View.VISIBLE;
 
 public class ListViewAdapter extends ArrayAdapter {
@@ -24,6 +28,8 @@ public class ListViewAdapter extends ArrayAdapter {
     private boolean numOpened;
     public boolean checkable;
     private boolean nowVisible;
+    String get_name, phone, fb_id;
+
     public boolean isOpened() {
         return numOpened;
     }
@@ -39,6 +45,7 @@ public class ListViewAdapter extends ArrayAdapter {
 
     public ListViewAdapter(Context context, int resource, List<PhoneBook> list) {
         super(context, resource, list);
+
         this.resourceId = resource;
         this.phoneBooks = list;
         this.numOpened = false;
@@ -64,6 +71,9 @@ public class ListViewAdapter extends ArrayAdapter {
         nameTextView.setText(name);
         final String str_true = name + "\n" + tel;
         final String str_false = name;
+
+//        Call<List<Contacts>> res = Net.getInstance().getRetro().get_Contacts(get_name, phone, fb_id);
+
 
         final ImageButton button1 = (ImageButton) convertView.findViewById(R.id.numbtn);
         button1.setOnClickListener(new Button.OnClickListener() {
