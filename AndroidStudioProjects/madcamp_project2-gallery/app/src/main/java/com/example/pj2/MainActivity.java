@@ -25,16 +25,23 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.pj2.tab1.Fragment1;
 import com.example.pj2.tab1.PhoneBook;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -49,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static List<String> names;
     public static List<PhoneBook> phoneBooks;
+    public static String fb_id;
 
     private String[] permission_list = { Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE };
 
@@ -58,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         checkPermission();
+        fb_id = "";
         names = new ArrayList<>();
         phoneBooks = new ArrayList<>();
         Cursor c = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
@@ -75,20 +84,21 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission_group.CONTACTS}, 1);
 
-//        FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         mCallbackManager = CallbackManager.Factory.create();
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-//        if (isLoggedIn){
-//            Log.d("AAA",accessToken.toString());
-//            Log.d(LoginManager.getInstance().);
-//        }
+
         LoginManager.getInstance().registerCallback(mCallbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         Log.d("Success", "Login");
+                        Log.d("Success", String.valueOf(Profile.getCurrentProfile().getId()));
+
+                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                        fragmentTransaction.add(R.id.outerfragment, new fragment_viewpager());
+                        fragmentTransaction.commit();
 
                     }
 
@@ -107,25 +117,33 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-//        Button btn_fb_login = findViewById(R.id.btn_fb_login);
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-//        btn_fb_login.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
 
-//        mViewpager = findViewById(R.id.frame);
         getHashKey(getApplicationContext());
-//        tabLayout.setupWithViewPager(mViewpager);
 
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-//        fragmentTransaction.add(R.id.frame, new tab1());
-        fragmentTransaction.add(R.id.outerfragment, new fragment_viewpager());
-        fragmentTransaction.commit();
+
+    }
+
+    public void requestUserProfile(LoginResult loginResult){
+        GraphRequest request = GraphRequest.newMeRequest(
+                loginResult.getAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        try {
+                            String email = response.getJSONObject().getString("email").toString();
+                            Log.d("Result", email);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "email");
+        request.setParameters(parameters);
+        request.executeAsync();
     }
 
     @Nullable
@@ -141,13 +159,10 @@ public class MainActivity extends AppCompatActivity {
                 md.update(signature.toByteArray());
                 keyHash = new String(Base64.encode(md.digest(), 0));
                 Log.d(TAG, keyHash);
-
             }
-
         } catch (Exception e) {
             Log.e("name not found", e.toString());
         }
-
         if (keyHash != null) {
             return keyHash;
         } else {
