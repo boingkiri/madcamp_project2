@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import com.example.pj2.tab1.Fragment1;
 import com.example.pj2.tab2.tab2;
@@ -57,10 +58,11 @@ public class fragment_viewpager extends Fragment{
         setupViewPager(mViewpager);
         tabLayout.setupWithViewPager(mViewpager);
 
+
         FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
 //        fragmentTransaction.add(R.id.frame, new tab1());
-        fragmentTransaction.replace(R.id.frame, new Fragment1());
+//        fragmentTransaction.replace(R.id.frame, fragment);
         fragmentTransaction.commit();
 
         return view;
