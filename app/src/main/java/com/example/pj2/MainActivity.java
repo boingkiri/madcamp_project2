@@ -108,9 +108,6 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                     }
                 });
-
-
-//        Button btn_fb_login = findViewById(R.id.btn_fb_login);
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
 
     }

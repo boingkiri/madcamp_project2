@@ -3,6 +3,8 @@ apply plugin: 'com.android.application'
 allprojects {
     repositories {
         maven { url 'https://jitpack.io' }
+        mavenCentral()
+        google()
     }
 }
 
@@ -44,4 +46,6 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:[5,6)'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 }

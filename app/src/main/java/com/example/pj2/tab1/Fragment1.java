@@ -57,7 +57,7 @@ public class Fragment1 extends Fragment {
         View view = inflater.inflate(R.layout.fragment_fragment1, null);
         checkPermission();
 
-        new JSONTask().execute("http://192.249.19.254:7080/Contacts");
+//        new JSONTask().execute("http://192.249.19.254:7080/Contacts");
 
         adapter = new ListViewAdapter(getActivity(), R.layout.listview_btn_item, REF_MENU);
 
