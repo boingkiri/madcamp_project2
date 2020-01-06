@@ -1,10 +1,16 @@
 package com.example.pj2.tab2;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.facebook.AccessToken;
 
+import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -16,6 +22,7 @@ import retrofit2.Retrofit;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public class tab2_download_ServerConnection {
 
@@ -32,8 +39,8 @@ public class tab2_download_ServerConnection {
         @POST("/download/entire")
         Call<List<File_list>> getPhotoList(@Part("user_id") RequestBody user_id);
 
-        @POST("/download/elem")
-        Call downloadImages(@Part("user_id") RequestBody user_id, @Part("filename") RequestBody filename);
+        @POST("/download/view")
+        Call downloadImages(@Part("user_id") RequestBody user_id, @Query("filename") RequestBody filename);
     }
 
     public void downloadToServer() {
@@ -54,10 +61,13 @@ public class tab2_download_ServerConnection {
                 Log.d("File_download",response.toString());
 
                 List<File_list> filelist = response.body();
-//                imageAdapter.updateData(filelist);
-//                for (int i = 0; i < filelist.size(); i++){
+                ArrayList<String> converted_filelist = new ArrayList<>();
+
+                for (int i = 0; i < filelist.size(); i++){
 //                    getPhotoFromServer(filelist.get(i).getName());
-//                }
+                    converted_filelist.add(filelist.get(i).getName());
+                }
+                imageAdapter.updateData(converted_filelist);
             }
 
             @Override
@@ -67,7 +77,7 @@ public class tab2_download_ServerConnection {
         });
     }
 
-    public void getPhotoFromServer(String filename) {
+    public void getPhotoFromServer(String filename, final ImageView img) {
         Retrofit retrofit = NetworkClient.getRetrofitClient(mContext);
         DownloadAPIs uploadAPIs = retrofit.create(DownloadAPIs.class);
 
@@ -83,11 +93,13 @@ public class tab2_download_ServerConnection {
 
         Call call = uploadAPIs.downloadImages(usr_id, filenameRequest);
 
-        call.enqueue(new Callback<List<File_list>>() {
+//        call.enqueue(new Callback<List<File_list>>() {
+        call.enqueue(new Callback<InputStream>() {
             @Override
-            public void onResponse(Call<List<File_list>> call, Response<List<File_list>> response) {
-                List<File_list> filelist = response.body();
-
+            public void onResponse(Call<InputStream> call, Response<InputStream> response) {
+                InputStream filedata = response.body();
+                Bitmap bm = BitmapFactory.decodeStream(filedata);
+//                img.setImageBitmap(bm);
 
             }
 

@@ -1,6 +1,7 @@
 package com.example.pj2.tab2;
 
 import android.app.Activity;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -19,9 +20,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.pj2.R;
+import com.example.pj2.helper.AppConstant;
 import com.example.pj2.helper.Utils;
 import com.facebook.AccessToken;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +44,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 
 public class tab2_download extends Fragment {
-    private ImageAdapter imgAdapter;
+    private ServerImageAdapter serverImageAdapter;
     private GridView gridView;
     String basePath = null;
     final int TAKE_CAMERA = 2;
@@ -50,23 +57,21 @@ public class tab2_download extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tab2_select, container, false);
         gridView = v.findViewById(R.id.mygalleryid);
 
-//        connectionUtil.downloadToServer();
-//        Log.d("Facebook_User", accessToken.getUserId());
 
-//        File mediaStorageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-//        File directory = new File(android.os.Environment.getExternalStorageDirectory() + File.separator + AppConstant.PHOTO_ALBUM);
+        File directory = new File(android.os.Environment.getExternalStorageDirectory() + File.separator + AppConstant.PHOTO_ALBUM);
 //        File a = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 //        Log.d("aaa",mediaStorageDir.getPath());
 
-//        if (!directory.exists()){
-//            if(!directory.mkdirs()){
-//                Log.e("tab2","failed to create directory");
-//            }
-//        }
-//        basePath = directory.getPath();
+        if (!directory.exists()){
+            if(!directory.mkdirs()){
+                Log.e("tab2","failed to create directory");
+            }
+        }
+        basePath = directory.getPath();
 
-        imgAdapter = new ImageAdapter(getContext().getApplicationContext());
-        gridView.setAdapter(imgAdapter);
+//        imgAdapter = new ImageAdapter(getContext().getApplicationContext());
+        serverImageAdapter = new ServerImageAdapter(getActivity());
+        gridView.setAdapter(serverImageAdapter);
         final Utils utils = new Utils(getActivity());
 
         //Set activity to send parameter to event listener
@@ -75,7 +80,7 @@ public class tab2_download extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String server_filename = (String)imgAdapter.getItem(position);
+                String server_filename = (String)serverImageAdapter.getItem(position);
                 if(!selected_photo.contains(server_filename)){
                     selected_photo.add(server_filename);
                     ((ImageView)view).setColorFilter(Color.parseColor("#AAAAAA"), PorterDuff.Mode.MULTIPLY);
@@ -91,6 +96,18 @@ public class tab2_download extends Fragment {
         Uploadbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                for (int i = 0; i < selected_photo.size(); i++) {
+                    FileStreamThread thr = new FileStreamThread(selected_photo.get(i), basePath);
+                    thr.start();
+                    try{
+                        thr.join();
+                    }
+                    catch(InterruptedException e){
+                        e.printStackTrace();
+                    }
+                }
+
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 fm.popBackStack();
             }

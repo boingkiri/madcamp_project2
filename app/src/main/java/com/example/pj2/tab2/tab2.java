@@ -175,7 +175,7 @@ public class tab2 extends Fragment {
 
                 fragmentTransaction.replace(R.id.outerfragment, newFragment);
 //                FragmentStatePagerAdapter swipe = DemoCollectionPagerAdapter(fm);
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();

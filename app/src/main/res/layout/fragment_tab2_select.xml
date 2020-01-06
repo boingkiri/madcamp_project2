@@ -3,6 +3,25 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tab2_select_upload"
+            android:text="Upload"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tab2_select_cancel"
+            android:text="Cancel"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
     <GridView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,22 +32,5 @@
         android:layout_margin="5dp"
         android:scrollbars="vertical"
         />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:orientation="horizontal">
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/tab2_select_upload"
-        android:text="Upload"
-        android:layout_weight="1"/>
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/tab2_select_cancel"
-        android:text="Cancel"
-        android:layout_weight="1"/>
-    </LinearLayout>
+
 </LinearLayout>
