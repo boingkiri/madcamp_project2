@@ -3,6 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageButton
+        android:layout_width="3sp"
+        android:layout_height="10sp"
+        android:id="@+id/problem_delbtn"
+        android:layout_margin="5sp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_weight="1"
+        android:background="@drawable/remove"
+        android:layout_gravity="center_vertical"
+        android:visibility="gone"/>
 
     <TextView
         android:layout_width="0dp"

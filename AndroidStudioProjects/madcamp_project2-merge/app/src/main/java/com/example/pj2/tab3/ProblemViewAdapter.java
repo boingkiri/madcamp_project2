@@ -46,7 +46,7 @@ public class ProblemViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        int pos = position;
+        final int pos = position;
         final Context context = parent.getContext();
 
         if(convertView == null){
@@ -68,28 +68,28 @@ public class ProblemViewAdapter extends BaseAdapter {
         floor_name.setText(problemViewItem.getfloor());
         problem_name.setText(problemViewItem.getproblem());
 
-//        final ImageButton button3 = (ImageButton) convertView.findViewById(R.id.delbtn);
-//        button3.setOnClickListener(new Button.OnClickListener() {
-//            public void onClick(View v) {
-//                phoneBooks.remove(pos);
-//                notifyDataSetChanged();
-//                button3.setVisibility(View.GONE);
-//            }
-//        });
-//        convertView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                if (nowVisible) {
-//                    button3.setVisibility(View.GONE);
-//                    nowVisible = false;
-//                }
-//                else {
-//                    button3.setVisibility(VISIBLE);
-//                    nowVisible = true;
-//                }
-//                return true;
-//            }
-//        });
+        final ImageButton problem_delbtn = (ImageButton) convertView.findViewById(R.id.problem_delbtn);
+        problem_delbtn.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                problemViewItems.remove(pos);
+                notifyDataSetChanged();
+                problem_delbtn.setVisibility(View.GONE);
+            }
+        });
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (nowVisible) {
+                    problem_delbtn.setVisibility(View.GONE);
+                    nowVisible = false;
+                }
+                else {
+                    problem_delbtn.setVisibility(VISIBLE);
+                    nowVisible = true;
+                }
+                return true;
+            }
+        });
 
         return convertView;
     }

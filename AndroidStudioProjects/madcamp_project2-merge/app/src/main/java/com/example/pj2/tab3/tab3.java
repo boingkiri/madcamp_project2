@@ -194,6 +194,7 @@ public class tab3 extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
         LatLng myloca = new LatLng(36.372245, 127.360369);
         googleMap.addMarker(new MarkerOptions().position(myloca).title("카이스트"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myloca, 16));
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
