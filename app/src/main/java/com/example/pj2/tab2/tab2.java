@@ -122,7 +122,7 @@ public class tab2 extends Fragment {
                     // Continue only if the File was successfully created
                     if (photoFile != null) {
                         Uri photoURI = FileProvider.getUriForFile(getActivity(),
-                                "com.example.tt.fileprovider",
+                                "com.example.pj2.fileprovider",
                                 photoFile);
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                         startActivityForResult(takePictureIntent, TAKE_CAMERA);
@@ -154,10 +154,13 @@ public class tab2 extends Fragment {
                 //Casting getitem value to integer -> can be vulnerable.
                 Fragment newFragment = new tab2_upload();
 
-                fragmentTransaction.replace(R.id.outerfragment, newFragment);
+//                fragmentTransaction.add(R.id.outerfragment, newFragment);
+//                fragmentTransaction.hide(tab2.this);
+//                fragmentTransaction.attach(newFragment);
 //                FragmentStatePagerAdapter swipe = DemoCollectionPagerAdapter(fm);
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-
+//                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                fragmentTransaction.hide();
+                fragmentTransaction.replace(R.id.outerfragment, newFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
@@ -173,10 +176,15 @@ public class tab2 extends Fragment {
                 //Casting getitem value to integer -> can be vulnerable.
                 Fragment newFragment = new tab2_download();
 
-                fragmentTransaction.replace(R.id.outerfragment, newFragment);
+//                fragmentTransaction.add(R.id.outerfragment, newFragment);
+//                fragmentTransaction.hide(tab2.this);
+//                fragmentTransaction.attach(newFragment);
+//                fragmentTransaction.detach();
 //                FragmentStatePagerAdapter swipe = DemoCollectionPagerAdapter(fm);
 //                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
+//                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.replace(R.id.outerfragment, newFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

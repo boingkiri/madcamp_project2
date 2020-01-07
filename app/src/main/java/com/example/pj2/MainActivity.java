@@ -74,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
     public static double latitude, longitude;
 
 
-    private String[] permission_list = { Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE };
+    private String[] permission_list = { Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA};
 
 
     @Override

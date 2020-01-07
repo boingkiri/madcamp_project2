@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.pj2.R;
 import com.example.pj2.helper.AppConstant;
@@ -51,12 +52,14 @@ public class tab2_download extends Fragment {
     final int TAKE_GALLERY = 3;
     ArrayList<String> selected_photo = new ArrayList<>();
 
+    public tab2_download(){
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tab2_select, container, false);
         gridView = v.findViewById(R.id.mygalleryid);
-
 
         File directory = new File(android.os.Environment.getExternalStorageDirectory() + File.separator + AppConstant.PHOTO_ALBUM);
 //        File a = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -93,6 +96,7 @@ public class tab2_download extends Fragment {
         });
 //
         Button Uploadbtn = v.findViewById(R.id.tab2_select_upload);
+        Uploadbtn.setText("Download");
         Uploadbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,7 +113,15 @@ public class tab2_download extends Fragment {
                 }
 
                 FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+//                fm.beginTransaction().hide(tab2_download.this);
+//                fragmentTransaction.add(R.id.frame, new tab2());
                 fm.popBackStack();
+                Fragment newFragment = new tab2();
+                fragmentTransaction.replace(R.id.frame, newFragment);
+                fragmentTransaction.commit();
+//                fm.popBackStack();
             }
         });
 
@@ -118,7 +130,14 @@ public class tab2_download extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+//                fm.beginTransaction().hide(tab2_download.this);
+//                fragmentTransaction.add(R.id.frame, new tab2());
                 fm.popBackStack();
+                Fragment newFragment = new tab2();
+                fragmentTransaction.replace(R.id.frame, newFragment);
+                fragmentTransaction.commit();
+//                fm.popBackStack();
             }
         });
         return v;

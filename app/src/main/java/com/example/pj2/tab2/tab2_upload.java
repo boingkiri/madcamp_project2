@@ -53,6 +53,8 @@ public class tab2_upload extends Fragment {
     final int TAKE_GALLERY = 3;
     ArrayList<String> selected_photo = new ArrayList<>();
 
+    public tab2_upload(){
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -101,7 +103,15 @@ public class tab2_upload extends Fragment {
             public void onClick(View v) {
                 uploadToServer(selected_photo);
                 FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+//                fm.beginTransaction().hide(tab2_upload.this);
+//                fragmentTransaction.add(R.id.frame, new tab2());
                 fm.popBackStack();
+                Fragment newFragment = new tab2();
+//                fragmentTransaction.add(R.id.outerfragment, newFragment);
+                fragmentTransaction.replace(R.id.frame, newFragment);
+                fragmentTransaction.commit();
+//                fm.popBackStack();
             }
         });
 
@@ -110,7 +120,14 @@ public class tab2_upload extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+//                fm.beginTransaction().hide(tab2_upload.this);
+//                fragmentTransaction.add(R.id.frame, new tab2());
                 fm.popBackStack();
+                Fragment newFragment = new tab2();
+                fragmentTransaction.replace(R.id.frame, newFragment);
+                fragmentTransaction.commit();
+//                fm.popBackStack();
             }
         });
         return v;
@@ -159,6 +176,7 @@ public class tab2_upload extends Fragment {
     private MultipartBody.Part prepareFilePart(String partName, String filepath) {
         // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
         // use the FileUtils to get the actual file by uri
+        Log.d("Filepath",filepath);
         File file = new File(filepath);
         // create RequestBody instance from file
 
