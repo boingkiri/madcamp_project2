@@ -16,7 +16,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 
-import com.bumptech.glide.Glide;
 import com.example.pj2.R;
 import com.example.pj2.helper.Utils;
 

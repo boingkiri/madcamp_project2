@@ -12,7 +12,6 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.example.pj2.helper.Utils;
 
 import java.util.ArrayList;
@@ -103,13 +102,13 @@ public class ImageAdapter extends BaseAdapter {
         Bitmap mThumbnail = ThumbnailUtils.extractThumbnail(bm, 250, 250);
         imageView.setPadding(8, 8, 8, 8);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//        imageView.setLayoutParams(new GridView.LayoutParams(250, 250));
+        imageView.setLayoutParams(new GridView.LayoutParams(250, 250));
         imageView.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.WRAP_CONTENT, GridView.LayoutParams.WRAP_CONTENT));
-//        imageView.setImageBitmap(mThumbnail);
-        Glide.with(mContext).load(mImgs.get(position))
-                .override(250,250)
-                .centerCrop()
-                .into(imageView);
+        imageView.setImageBitmap(mThumbnail);
+//        Glide.with(mContext).load(mImgs.get(position))
+//                .override(250,250)
+//                .centerCrop()
+//                .into(imageView);
         return imageView;
     }
 

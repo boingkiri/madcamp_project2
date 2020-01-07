@@ -1,10 +1,12 @@
 package com.example.pj2.tab3;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,13 +16,30 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.pj2.R;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 import android.graphics.Typeface;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import static com.facebook.share.internal.DeviceShareDialogFragment.TAG;
 
 
 /**
@@ -60,6 +79,14 @@ public class tab3 extends Fragment {
         citybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View btn_view) {
+                FirebaseInstanceId.getInstance().getId();
+                FirebaseMessaging fm = FirebaseMessaging.getInstance();
+//                fm.send(new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com")
+//                        .setMessageId(Integer.toString(messageId))
+//                        .addData("my_message", "Hello World")
+//                        .addData("my_action","SAY_HELLO")
+//                        .build());
+
                 show(loc.getCities(), citybtn);
                 sectorbtn.setText("시/구/군/면");
             }
@@ -121,6 +148,48 @@ public class tab3 extends Fragment {
         });
         builder.show();
     }
+
+//    public static void sendPushToSingleInstance(final Context activity, final HashMap dataValue /*your data from the activity*/, final String instanceIdToken /*firebase instance token you will find in documentation that how to get this*/ ) {
+//
+//
+//        final String url = "https://fcm.googleapis.com/fcm/send";
+//        StringRequest myReq = new StringRequest(Request.Method.POST,url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Toast.makeText(activity, "Bingo Success", Toast.LENGTH_SHORT).show();
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(activity, "Oops error", Toast.LENGTH_SHORT).show();
+//                    }
+//                }) {
+//
+//            @Override
+//            public byte[] getBody() throws com.android.volley.AuthFailureError {
+//                Map<String,String> rawParameters = new Hashtable<String, String>();
+//                rawParameters.put("data", new JSONObject(dataValue).toString());
+//                rawParameters.put("to", instanceIdToken);
+//                return new JSONObject(rawParameters).toString().getBytes();
+//            };
+//
+//            public String getBodyContentType()
+//            {
+//                return "application/json; charset=utf-8";
+//            }
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                HashMap<String, String> headers = new HashMap<String, String>();
+//                headers.put("Authorization", "key="+YOUR_LEGACY_SERVER_KEY_FROM_FIREBASE_CONSOLE);
+//                return headers;
+//            }
+//
+//        };
+//
+//        Volley.newRequestQueue(activity).add(myReq);
+//    }
 }
 
 

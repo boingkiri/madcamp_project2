@@ -63,7 +63,7 @@ public class Utils {
             alert.setMessage(AppConstant.PHOTO_ALBUM
                     + " directory path is not valid! Please set the image directory name AppConstant.java class");
             alert.setPositiveButton("OK", null);
-            alert.show();
+//            alert.show();
         }
 
         return filePaths;

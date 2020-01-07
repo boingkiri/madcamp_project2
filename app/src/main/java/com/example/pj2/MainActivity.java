@@ -25,7 +25,20 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.pj2.tab1.PhoneBook;
+import com.example.pj2.tab3.custom_jsonparsor;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -33,8 +46,12 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -61,16 +78,16 @@ public class MainActivity extends AppCompatActivity {
         names = new ArrayList<>();
         phoneBooks = new ArrayList<>();
         Cursor c = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-        c.moveToFirst();
-        do {
-            PhoneBook pb = new PhoneBook();
-            String name = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            String phoneNumber = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            pb.setName(name);
-            pb.setTel(phoneNumber);
-            names.add(name);
-            phoneBooks.add(pb);
-        } while (c.moveToNext());
+//        c.moveToFirst();
+//        do {
+//            PhoneBook pb = new PhoneBook();
+//            String name = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+//            String phoneNumber = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+//            pb.setName(name);
+//            pb.setTel(phoneNumber);
+//            names.add(name);
+//            phoneBooks.add(pb);
+//        } while (c.moveToNext());
 
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission_group.CONTACTS}, 1);
@@ -79,11 +96,26 @@ public class MainActivity extends AppCompatActivity {
 
         mCallbackManager = CallbackManager.Factory.create();
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-//        if (isLoggedIn){
-//            Log.d("AAA",accessToken.toString());
-//            Log.d(LoginManager.getInstance().);
-//        }
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("Firebase", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+
+                        String token = task.getResult().getToken();
+                        Log.w("Firebase", "Token : "+ token);
+                        saveTokenToServer(token);
+                    }
+                });
+
+
+
         LoginManager.getInstance().registerCallback(mCallbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -109,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-
+//        getHashKey(this);
     }
 
     @Nullable
@@ -177,6 +209,55 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+    public void saveTokenToServer(String token){
+        String request = "http://192.249.19.254:7280/toilet/token";
+        request += "?token="+token;
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, request,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        result = response;
+////                        Log.d("response", result);
+////                        custom_jsonparsor aa = new custom_jsonparsor();
+////                        data = aa.weatherjsonParsor(response);
+////                        Log.d("parsing", data.toString());
+////                        if (data.isEmpty()){ // Data is not updated yet. Take data from one hour ago.
+////                            Log.d("getinfo","No data : Take data from past");
+//////                        getinfo_past();
+////                        }
+////                        else{
+////                            setView(data, city, sector);
+////                        }
+                        Log.d("SendToken",response);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tab3", "Connecting problem");
+                if (error instanceof TimeoutError) {
+                    Log.d("tab3", "Timeout");
+                } else if (error instanceof NoConnectionError) {
+                    //TODO
+                    Log.d("tab3", "NoConnectionError problem");
+                } else if (error instanceof AuthFailureError) {
+                    //TODO
+                    Log.d("tab3", "AuthFailureError problem");
+                } else if (error instanceof ServerError) {
+                    //TODO
+                    Log.d("tab3", "ServerError problem");
+                } else if (error instanceof NetworkError) {
+                    //TODO
+                    Log.d("tab3", "NetworkError problem");
+                } else if (error instanceof ParseError) {
+                    //TODO
+                    Log.d("tab3", "ParseError problem");
+                }
+            }
+        });
+        queue.add(stringRequest);
     }
 }
 
