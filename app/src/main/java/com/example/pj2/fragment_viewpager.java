@@ -70,7 +70,7 @@ public class fragment_viewpager extends Fragment{
     public void setupViewPager(androidx.viewpager.widget.ViewPager viewPager) {
         sectionPageAdapter.addFragment(new Fragment1(), "Tel");
         sectionPageAdapter.addFragment(new tab2(), "Gallery");
-        sectionPageAdapter.addFragment(new tab3(), "Weather");
+        sectionPageAdapter.addFragment(new tab3(), "Toilet");
         viewPager.setAdapter(sectionPageAdapter);
     }
 

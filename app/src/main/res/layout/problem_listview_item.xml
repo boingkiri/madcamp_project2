@@ -5,7 +5,7 @@
 
     <ImageButton
         android:layout_width="3sp"
-        android:layout_height="10sp"
+        android:layout_height="20sp"
         android:id="@+id/problem_delbtn"
         android:layout_margin="5sp"
         android:layout_alignParentLeft="true"

@@ -1,13 +1,22 @@
 package com.example.pj2.tab3;
 
+import android.content.Context;
 import android.content.DialogInterface;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
@@ -17,6 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,6 +35,9 @@ import android.widget.Toast;
 
 import com.example.pj2.MainActivity;
 import com.example.pj2.R;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -34,6 +48,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import android.graphics.Typeface;
 
@@ -53,11 +68,9 @@ public class tab3 extends Fragment implements OnMapReadyCallback {
     private EditText editSearch;
     private boolean mapsSupported = true;
     View view;
-    LocationManager locationManager;
-    RelativeLayout boxMap;
-    double mLatitude;
-    double mLongitude;
-
+    double mLatitude = MainActivity.latitude;
+    double mLongitude = MainActivity.longitude;
+    ListView listView = null;
 
 
     public tab3() {
@@ -74,6 +87,7 @@ public class tab3 extends Fragment implements OnMapReadyCallback {
 
         view = inflater.inflate(R.layout.fragment_tab3, container, false);
 
+
         // 리스트 생성
         list = new ArrayList<String>();
         if(PROBLEM != null){
@@ -84,31 +98,33 @@ public class tab3 extends Fragment implements OnMapReadyCallback {
 
         /// 리스트뷰 어댑터 연결
         adapter = new ProblemViewAdapter(getActivity(), R.layout.problemlist_item, PROBLEM);
-        ListView listView = view.findViewById(R.id.tab3_listview);
+        listView = view.findViewById(R.id.tab3_listview);
         listView.setAdapter(adapter);
 
-        editSearch = (EditText) view.findViewById(R.id.editSearch);
+        editSearch = (EditText)view.findViewById(R.id.editSearch) ;
         editSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void afterTextChanged(Editable edit) {
+                String filterText = edit.toString() ;
+                if (filterText.length() > 0) {
+                    listView.setFilterText(filterText) ;
+                } else {
+                    listView.clearTextFilter() ;
+                }
+            }
 
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String text = editSearch.getText().toString();
-                search(text);
-            }
-        });
+        }) ;
 
 
         Button register = (Button) view.findViewById(R.id.register);
-        Button complete = (Button) view.findViewById(R.id.solve);
+//        Button complete = (Button) view.findViewById(R.id.solve);
         Button emergency = (Button) view.findViewById(R.id.emergency);
 
         register.setOnClickListener(new View.OnClickListener() { // 클릭시 등록 다이얼로그 생성
@@ -157,14 +173,6 @@ public class tab3 extends Fragment implements OnMapReadyCallback {
         });
         adapter.notifyDataSetChanged();
 
-        complete.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                // 해결버튼 구성
-                // 버튼 누를시 리스트뷰에 체크박스가 나타나도록해서 삭제가 가능하도록 함
-            }
-        });
-
         emergency.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -192,7 +200,8 @@ public class tab3 extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
         mMap = googleMap;
-        LatLng myloca = new LatLng(36.372245, 127.360369);
+        System.out.println("666666666666666666" + mLatitude + " " + mLongitude);
+        LatLng myloca = new LatLng(mLatitude, mLongitude);
         googleMap.addMarker(new MarkerOptions().position(myloca).title("카이스트"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myloca, 16));
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -203,6 +212,28 @@ public class tab3 extends Fragment implements OnMapReadyCallback {
         super.onSaveInstanceState(outstate);
         mapView.onSaveInstanceState(outstate);
     }
+
+    final LocationListener gpsLocationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+
+            String provider = location.getProvider();
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
+            double altitude = location.getAltitude();
+            System.out.println("2222222222222222222" + longitude);
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+
+        public void onProviderEnabled(String provider) {
+        }
+
+        public void onProviderDisabled(String provider) {
+        }
+    };
+
+
 
 
     public void search(String charText) {

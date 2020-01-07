@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.database.Cursor;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -46,7 +47,10 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
@@ -66,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static List<String> names;
     public static List<PhoneBook> phoneBooks;
+    private FusedLocationProviderClient mFusedLocationClient;
+    public static double latitude, longitude;
+
 
     private String[] permission_list = { Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE };
 
@@ -75,19 +82,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         checkPermission();
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if(location != null){
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+
+                            System.out.println("9999999999999999999999" + latitude + " " + longitude);
+                        }
+                    }
+                });
+
         names = new ArrayList<>();
         phoneBooks = new ArrayList<>();
         Cursor c = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-//        c.moveToFirst();
-//        do {
-//            PhoneBook pb = new PhoneBook();
-//            String name = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-//            String phoneNumber = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-//            pb.setName(name);
-//            pb.setTel(phoneNumber);
-//            names.add(name);
-//            phoneBooks.add(pb);
-//        } while (c.moveToNext());
+        c.moveToFirst();
+        do {
+            PhoneBook pb = new PhoneBook();
+            String name = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            String phoneNumber = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            pb.setName(name);
+            pb.setTel(phoneNumber);
+            names.add(name);
+            phoneBooks.add(pb);
+        } while (c.moveToNext());
 
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission_group.CONTACTS}, 1);
