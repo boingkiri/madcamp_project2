@@ -14,6 +14,9 @@ public class Problem {
 //        this.problem = problem;
 //    }
 
+    public Problem(){
+    }
+
     public String getBuilding() {
         return this.building;
     }

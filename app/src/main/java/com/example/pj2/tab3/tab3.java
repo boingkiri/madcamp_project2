@@ -142,7 +142,7 @@ public class tab3 extends Fragment implements OnMapReadyCallback {
                         problem.setproblem(problem_content);
 
                         adapter.problemViewItems.add(problem); // 입력한 건물, 층, 문제를 리스트뷰에 넣어주기
-
+                        adapter.postBoard(problem);
                         dialog.dismiss(); // 닫기
                     }
                 });
