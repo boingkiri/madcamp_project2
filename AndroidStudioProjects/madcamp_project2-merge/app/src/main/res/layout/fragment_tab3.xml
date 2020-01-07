@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".tab3.tab3"
+    android:orientation="vertical">
+
+
+<!--    <TextView-->
+<!--        android:id="@+id/building"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentLeft="true"-->
+<!--        android:layout_marginLeft="35dp"-->
+<!--        android:layout_marginTop="50dp"-->
+<!--        android:text="건물명"-->
+<!--        android:textSize="20sp" />-->
+
+    <Button
+        android:layout_width="55dp"
+        android:layout_height="40dp"
+        android:id="@+id/register"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="35dp"
+        android:layout_toLeftOf="@id/solve"
+        android:text="등록하기"
+        android:textSize="8sp" />
+
+    <Button
+        android:layout_width="55dp"
+        android:layout_height="40dp"
+        android:id="@+id/solve"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="35dp"
+        android:layout_centerHorizontal="true"
+        android:text="해결완료"
+        android:textSize="8sp" />
+
+    <Button
+        android:layout_width="55dp"
+        android:layout_height="40dp"
+        android:id="@+id/emergency"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="35dp"
+        android:layout_toRightOf="@id/solve"
+        android:text="긴급요청"
+        android:textSize="8sp" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="352dp"
+        android:layout_height="120dp"
+        android:layout_above="@id/tab3_total_listview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/tab3_total_listview"
+        android:layout_width="300dp"
+        android:layout_height="350dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="35dp"
+        android:layout_marginBottom="15dp"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/editSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="검색어를 입력하세요"/>
+
+        <ListView
+            android:id="@+id/tab3_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:scrollbars="vertical">
+
+        </ListView>
+    </LinearLayout>
+</RelativeLayout>
