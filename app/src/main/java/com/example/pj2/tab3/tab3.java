@@ -1,22 +1,14 @@
 package com.example.pj2.tab3;
 
-import android.content.Context;
 import android.content.DialogInterface;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
@@ -26,36 +18,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.pj2.MainActivity;
+import com.example.pj2.tab1.Net;
 import com.example.pj2.R;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-
-import android.graphics.Typeface;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class tab3 extends Fragment implements OnMapReadyCallback {
 
@@ -125,7 +106,7 @@ public class tab3 extends Fragment implements OnMapReadyCallback {
 
         Button register = (Button) view.findViewById(R.id.register);
 //        Button complete = (Button) view.findViewById(R.id.solve);
-        Button emergency = (Button) view.findViewById(R.id.emergency);
+        final Button emergency = (Button) view.findViewById(R.id.emergency);
 
         register.setOnClickListener(new View.OnClickListener() { // 클릭시 등록 다이얼로그 생성
             @Override
@@ -173,12 +154,73 @@ public class tab3 extends Fragment implements OnMapReadyCallback {
         });
         adapter.notifyDataSetChanged();
 
+
         emergency.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                final Problem send_emergency = new Problem();
+                AlertDialog.Builder ad = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = getLayoutInflater();
+                View view = inflater.inflate(R.layout.register_dialog, null);
+                ad.setView(view);
+                ad.setTitle("문제 사항 등록");
+                ad.setMessage("건물명 / 층수 / 내용을 입력해주세요");
+
+                final EditText edit1 = (EditText) view.findViewById(R.id.edittext_building); // 건물이름등록
+                final EditText edit2 = (EditText) view.findViewById(R.id.edittext_floor); // 층수 등록
+                final EditText edit3 = (EditText) view.findViewById(R.id.edittext_content); // 내용 등록
+                final Button submit = (Button) view.findViewById(R.id.register_submit); // 버튼 누르면 등록
+
+                final AlertDialog dialog = ad.create();
+                submit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Problem problem = new Problem();
+
+                        final String building = edit1.getText().toString();
+                        final String floor = edit2.getText().toString();
+                        final String problem_content = edit3.getText().toString();
+
+                        send_emergency.setBuilding(building);
+                        send_emergency.setfloor(floor);
+                        send_emergency.setproblem(problem_content);
+
+
+                        problem.setBuilding(building);
+                        problem.setfloor(floor);
+                        problem.setproblem(problem_content);
+
+                        adapter.problemViewItems.add(problem); // 입력한 건물, 층, 문제를 리스트뷰에 넣어주기
+                        Call<Problem> emergency_Problem = Net_tab3.getInstance().getRetro().emergency_Problem(send_emergency);
+                        emergency_Problem.enqueue(new Callback<Problem>() {
+                            @Override
+                            public void onResponse(Call<Problem> call, Response<Problem> response) {
+                            }
+
+                            @Override
+                            public void onFailure(Call<Problem> call, Throwable t) {
+
+                            }
+                        });
+
+                        dialog.dismiss(); // 닫기
+                    }
+                });
+                ad.setNegativeButton("취소하기", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();     //닫기
+                    }
+                });
+                dialog.show();
                 // 긴급 알림 전송 버튼 - 앱의 푸시알림을 통해서 알림을 보냄
+                ///toilet/emergency - POST 형식으로 body는 problem 안에 있는것들 보내기
+
+                // 클릭 시 긴급요청을 한 정보만 리퀘스트로 가도록 하기
+                // 리스트에도 들어가게 하기
             }
         });
+        adapter.notifyDataSetChanged();
 
         return view;
     }
