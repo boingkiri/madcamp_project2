@@ -29,13 +29,13 @@
 
     <Button
         android:id="@+id/register"
-        android:layout_width="60dp"
-        android:layout_height="35dp"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
         android:layout_above="@id/map"
-        android:layout_marginLeft="70dp"
+        android:layout_marginLeft="60dp"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="13dp"
-        android:background="@color/colorTab"
+        android:background="@drawable/button_background"
         android:text="등록하기"
         android:textSize="15sp" />
 
@@ -51,14 +51,14 @@
 
     <Button
         android:id="@+id/emergency"
-        android:layout_width="60dp"
-        android:layout_height="35dp"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
         android:layout_above="@id/map"
         android:layout_marginLeft="100dp"
         android:layout_marginTop="25dp"
         android:layout_toRightOf="@id/register"
         android:layout_marginBottom="13dp"
-        android:background="@color/colorTab"
+        android:background="@drawable/button_background"
         android:text="긴급요청"
         android:textSize="15sp" />
 
