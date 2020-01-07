@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp" >
+    <EditText
+        android:id="@+id/edittext_building"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="건물명"
+        android:ems="10"
+        android:layout_marginBottom="10dp"
+        />
+    <EditText
+        android:id="@+id/edittext_floor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="층 수"
+        android:ems="10"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/edittext_building"
+        />
+    <EditText
+        android:id="@+id/edittext_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="해결이 필요한 내용"
+        android:ems="10"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/edittext_floor"
+        />
+    <Button
+        android:id="@+id/register_submit"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edittext_phone"
+        android:layout_marginBottom="20dp"
+        android:text="등록하기" />
+
+</LinearLayout>
