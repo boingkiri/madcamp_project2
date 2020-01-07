@@ -18,7 +18,7 @@
         android:id="@+id/edittext_floor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="층 수"
+        android:hint="층 / 성별"
         android:ems="10"
         android:layout_marginBottom="10dp"
         android:layout_below="@+id/edittext_building"

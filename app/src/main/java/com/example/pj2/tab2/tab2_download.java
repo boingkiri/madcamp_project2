@@ -112,6 +112,7 @@ public class tab2_download extends Fragment {
                 fm.popBackStack();
             }
         });
+        serverImageAdapter.notifyDataSetChanged();
 
         Button cancelbtn = v.findViewById(R.id.tab2_select_cancel);
         cancelbtn.setOnClickListener(new View.OnClickListener() {

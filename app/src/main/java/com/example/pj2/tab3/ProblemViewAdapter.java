@@ -103,7 +103,7 @@ public class ProblemViewAdapter extends BaseAdapter implements Filterable {
         }
 
         ViewGroup.LayoutParams layoutParams = convertView.getLayoutParams();
-        layoutParams.height = 100;
+        layoutParams.height = 85;
         convertView.setLayoutParams(layoutParams);
 
         TextView buildingname = (TextView) convertView.findViewById(R.id.textViewBuilding);
