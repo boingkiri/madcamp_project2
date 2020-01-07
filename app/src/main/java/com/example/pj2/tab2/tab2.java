@@ -187,6 +187,8 @@ public class tab2 extends Fragment {
                 fragmentTransaction.replace(R.id.outerfragment, newFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+                imgAdapter.notifyDataSetChanged();
+
             }
         });
 //        return inflater.inflate(R.layout.fragment_tab2, container, false);

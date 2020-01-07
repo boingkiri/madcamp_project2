@@ -57,9 +57,9 @@ public class tab3 extends Fragment implements OnMapReadyCallback {
     public tab3() {
         // Required empty public constructor
         Problem first_prob = new Problem();
-        first_prob.setBuilding("Building");
-        first_prob.setfloor("Floor");
-        first_prob.setproblem("Content");
+        first_prob.setBuilding("건물명");
+        first_prob.setfloor("층 / 성별");
+        first_prob.setproblem("내용");
         PROBLEM.add(first_prob);
     }
 
@@ -117,7 +117,7 @@ public class tab3 extends Fragment implements OnMapReadyCallback {
                 View view = inflater.inflate(R.layout.register_dialog, null);
                 ad.setView(view);
                 ad.setTitle("문제 사항 등록");
-                ad.setMessage("건물명 / 층수 / 내용을 입력해주세요");
+                ad.setMessage("건물명 / 층, 성별 / 내용을 입력해주세요");
 
                 final EditText edit1 = (EditText) view.findViewById(R.id.edittext_building); // 건물이름등록
                 final EditText edit2 = (EditText) view.findViewById(R.id.edittext_floor); // 층수 등록
@@ -163,8 +163,8 @@ public class tab3 extends Fragment implements OnMapReadyCallback {
                 LayoutInflater inflater = getLayoutInflater();
                 View view = inflater.inflate(R.layout.register_dialog, null);
                 ad.setView(view);
-                ad.setTitle("문제 사항 등록");
-                ad.setMessage("건물명 / 층수 / 내용을 입력해주세요");
+                ad.setTitle("긴급 요청 보내기 ");
+                ad.setMessage("건물명 / 층, 성별 / 내용을 입력해주세요");
 
                 final EditText edit1 = (EditText) view.findViewById(R.id.edittext_building); // 건물이름등록
                 final EditText edit2 = (EditText) view.findViewById(R.id.edittext_floor); // 층수 등록
@@ -253,56 +253,6 @@ public class tab3 extends Fragment implements OnMapReadyCallback {
     public void onSaveInstanceState(Bundle outstate){
         super.onSaveInstanceState(outstate);
         mapView.onSaveInstanceState(outstate);
-    }
-
-    final LocationListener gpsLocationListener = new LocationListener() {
-        public void onLocationChanged(Location location) {
-
-            String provider = location.getProvider();
-            double longitude = location.getLongitude();
-            double latitude = location.getLatitude();
-            double altitude = location.getAltitude();
-            System.out.println("2222222222222222222" + longitude);
-        }
-
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-
-        public void onProviderEnabled(String provider) {
-        }
-
-        public void onProviderDisabled(String provider) {
-        }
-    };
-
-
-
-
-    public void search(String charText) {
-
-        // 문자 입력시마다 리스트를 지우고 새로 뿌려준다.
-        list.clear();
-
-        // 문자 입력이 없을때는 모든 데이터를 보여준다.
-        if (charText.length() == 0) {
-            list.addAll(arraylist);
-        }
-        // 문자 입력을 할때..
-        else
-        {
-            // 리스트의 모든 데이터를 검색한다.
-            for(int i = 0;i < arraylist.size(); i++)
-            {
-                // arraylist의 모든 데이터에 입력받은 단어(charText)가 포함되어 있으면 true를 반환한다.
-                if (arraylist.get(i).toLowerCase().contains(charText))
-                {
-                    // 검색된 데이터를 리스트에 추가한다.
-                    list.add(arraylist.get(i));
-                }
-            }
-        }
-        // 리스트 데이터가 변경되었으므로 아답터를 갱신하여 검색된 데이터를 화면에 보여준다.
-        adapter.notifyDataSetChanged();
     }
 
     private void settingList(){
